@@ -1,0 +1,11 @@
+DEFINED_PHASES=compile configure install prepare unpack
+DEPEND=dev-lang/ocaml[ocamlopt] >=dev-vcs/git-1.8.2.1
+DESCRIPTION=Haxe cross-platform toolkit
+EAPI=3
+HOMEPAGE=http://haxe.org/
+KEYWORDS=amd64 ~arm ~ppc x86
+LICENSE=GPL-2 LGPL-2.1 BSD
+SLOT=0
+_eclass_exported_funcs=src_unpack:git-r3 src_prepare:base src_configure:base src_compile:base src_install:-
+_eclasses_=base	3fe4f8980633fd7bc69e9887209ba2fe	eutils	9d81603248f2ba3ec59124320d123e5e	git-r3	ef66dfc3db09f327af21cf32f140fb2b	multilib	3972ca401cf7dbb430df9995f5d8d580	toolchain-funcs	7a212e5e01adfa4805c9978366e6ee85
+_md5_=3adab3b4a0aa23677c2b800cebc04d19
