@@ -1,0 +1,14 @@
+Fixes an include when using the system freetype2.
+
+diff -uNr a/src/app/util/freetype_utils.cpp b/src/app/util/freetype_utils.cpp
+--- a/src/app/util/freetype_utils.cpp	2016-01-25 20:45:54.965394178 +0100
++++ b/src/app/util/freetype_utils.cpp	2016-01-25 20:49:26.146791380 +0100
+@@ -21,7 +21,7 @@
+ 
+ #include <stdexcept>
+ 
+-#include "freetype/ftglyph.h"
++#include "ftglyph.h"
+ #include "ft2build.h"
+ #include FT_FREETYPE_H
+ 
