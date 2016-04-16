@@ -8,13 +8,8 @@ inherit cmake-utils toolchain-funcs git-r3
 DESCRIPTION="Animated sprite editor & pixel art tool"
 HOMEPAGE="http://www.aseprite.org"
 EGIT_REPO_URI="https://github.com/aseprite/aseprite"
-
-if [[ ${PV} = 9999 ]]; then
-	EGIT_COMMIT="master"
-else
-	EGIT_COMMIT="v${PV}"
-	KEYWORDS="~amd64 ~x86"
-fi
+EGIT_COMMIT="v${PV}"
+KEYWORDS="~amd64 ~x86"
 
 LICENSE="GPL-2"
 SLOT="0"
@@ -29,7 +24,7 @@ RDEPEND="
 	system-libpng? ( media-libs/libpng:0 )
 	system-curl? ( net-misc/curl )
 	system-zlib? ( sys-libs/zlib )
-	system-jpeg? ( virtual/jpeg )
+	system-jpeg? ( virtual/jpeg:= )
 	x11-libs/libX11
 	system-pixman? ( x11-libs/pixman )"
 DEPEND="$RDEPEND
@@ -43,7 +38,7 @@ DOCS=( docs/files/ase.txt
 	README.md )
 
 src_prepare() {
-	use system-freetype && epatch "${FILESDIR}/aseprite-freetype-include.patch"
+	use system-freetype && epatch "${FILESDIR}/aseprite-freetype-include-${PV}.patch"
 
 	cmake-utils_src_prepare
 
