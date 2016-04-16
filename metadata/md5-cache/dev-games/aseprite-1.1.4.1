@@ -1,0 +1,14 @@
+DEFINED_PHASES=compile configure install prepare test
+DEPEND=system-tinyxml? ( dev-libs/tinyxml ) system-allegro? ( media-libs/allegro:0[X,png] ) system-freetype? ( media-libs/freetype:2 ) system-giflib? ( >=media-libs/giflib-5.0 ) system-libpng? ( media-libs/libpng:0 ) webp? ( system-libwebp? ( media-libs/libwebp ) ) system-curl? ( net-misc/curl ) system-zlib? ( sys-libs/zlib ) system-jpeg? ( virtual/jpeg:= ) x11-libs/libX11 system-pixman? ( x11-libs/pixman ) app-arch/unzip dev-cpp/gtest sys-devel/make >=dev-util/cmake-2.8.12
+DESCRIPTION=Animated sprite editor & pixel art tool
+EAPI=6
+HOMEPAGE=http://www.aseprite.org
+IUSE=debug memleak webp system-allegro +system-curl +system-freetype +system-giflib +system-jpeg +system-libpng +system-libwebp +system-pixman +system-tinyxml +system-zlib
+KEYWORDS=~amd64 ~x86
+LICENSE=GPL-2
+RDEPEND=system-tinyxml? ( dev-libs/tinyxml ) system-allegro? ( media-libs/allegro:0[X,png] ) system-freetype? ( media-libs/freetype:2 ) system-giflib? ( >=media-libs/giflib-5.0 ) system-libpng? ( media-libs/libpng:0 ) webp? ( system-libwebp? ( media-libs/libwebp ) ) system-curl? ( net-misc/curl ) system-zlib? ( sys-libs/zlib ) system-jpeg? ( virtual/jpeg:= ) x11-libs/libX11 system-pixman? ( x11-libs/pixman )
+SLOT=0
+SRC_URI=https://github.com/aseprite/aseprite/releases/download/v1.1.4.1/Aseprite-v1.1.4.1-Source.zip
+_eclass_exported_funcs=src_prepare:- src_configure:- src_compile:cmake-utils src_test:cmake-utils src_install:cmake-utils
+_eclasses_=cmake-utils	422bbd1bee2557490177a34dbe0a662b	eutils	9d81603248f2ba3ec59124320d123e5e	flag-o-matic	d270fa247153df66074f795fa42dba3e	multilib	23ae8c186171e6476af098d2a50d0ee0	toolchain-funcs	d513d423d449877e49d99af3f7af7acb	versionator	99ae9d758cbe7cfed19170e7d48f5a9c
+_md5_=0201fea6fd9eaa9bc804bc8a85e0bf8c
