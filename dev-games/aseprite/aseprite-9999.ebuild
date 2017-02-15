@@ -7,13 +7,16 @@ inherit cmake-utils toolchain-funcs
 
 DESCRIPTION="Animated sprite editor & pixel art tool"
 HOMEPAGE="http://www.aseprite.org"
-LICENSE="GPL-2"
+LICENSE="Proprietary"
 SLOT="0"
 
-if [[ ${PV} = 9999* ]]; then
+if [[ ${PV} = 9999* || ${PV} = *beta* ]]; then
 	inherit git-r3
 	EGIT_REPO_URI="https://github.com/aseprite/aseprite"
-	EGIT_COMMIT="master"
+	EGIT_BRANCH="master"
+	if [[ ${PV} != 9999* ]]; then
+		EGIT_COMMIT="v${PV/_/-}"
+	fi
 else
 	SRC_URI="https://github.com/${PN}/${PN}/releases/download/v${PV}/${PN^}-v${PV}-Source.zip"
 	KEYWORDS="~amd64 ~x86"
@@ -46,18 +49,16 @@ RDEPEND="
 	system-zlib? ( sys-libs/zlib )
 	system-jpeg? ( virtual/jpeg:= )
 	x11-libs/libX11
+	x11-libs/libXxf86dga
 	system-pixman? ( x11-libs/pixman )"
 DEPEND="$RDEPEND
-	app-arch/unzip
-	dev-cpp/gtest"
+	app-arch/unzip"
+	#dev-cpp/gtest
 
-DOCS=( docs/files/ase.txt
-	docs/files/fli.txt
-	docs/files/msk.txt
-	docs/files/pic.txt
-	docs/files/picpro.txt
+DOCS=( EULA.txt
+	docs/ase-file-specs.md
+	docs/LICENSES.md
 	README.md )
-# EULA.txt not applicable to source code distribution.
 
 src_prepare() {
 	cmake-utils_src_prepare
@@ -77,12 +78,13 @@ src_configure() {
 		-DCURL_STATICLIB=OFF
 		-DENABLE_UPDATER=OFF
 		-DFULLSCREEN_PLATFORM=ON
-		-DENABLE_TESTS=ON
+		-DENABLE_TESTS=OFF
+		-DBUILD_GMOCK=OFF
 		$(use system-pixman && echo \
-			-DLIBPIXMAN_INCLUDE_DIR="$($(tc-getPKG_CONFIG) --variable=includedir pixman-1)/pixman-1" \
-			-DLIBPIXMAN_LIBRARY="$($(tc-getPKG_CONFIG) --variable=libdir pixman-1)/libpixman-1.so")
+			-DPIXMAN_DIR="$($(tc-getPKG_CONFIG) --variable=includedir pixman-1)/pixman-1" \
+			-DPIXMAN_LIBRARY="$($(tc-getPKG_CONFIG) --variable=libdir pixman-1)/libpixman-1.so")
 		$(use system-freetype && echo \
-			-DFREETYPE_INCLUDE_DIR="$($(tc-getPKG_CONFIG) --variable=includedir freetype2)" \
+			-DFREETYPE_DIR="$($(tc-getPKG_CONFIG) --variable=includedir freetype2)" \
 			-DFREETYPE_LIBRARY="$($(tc-getPKG_CONFIG) --variable=libdir freetype2)/libfreetype.so")
 		-DUSE_SHARED_ALLEGRO4="$(usex system-allegro)"
 		-DUSE_SHARED_CURL="$(usex system-curl)"
@@ -96,7 +98,7 @@ src_configure() {
 		-DUSE_SHARED_ZLIB="$(usex system-zlib)"
 		-DWITH_WEBP_SUPPORT="$(usex webp)"
 		-DUSE_SHARED_LIBWEBP="$(usex system-libwebp)"
-		-DENABLE_memleak="$(usex memleak)"
+		-DENABLE_MEMLEAK="$(usex memleak)"
 	)
 
 	cmake-utils_src_configure
