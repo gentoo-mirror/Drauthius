@@ -1,15 +1,15 @@
-# Copyright 1999-2014 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/games-engines/love/love-0.8.0.ebuild,v 1.10 2014/07/06 13:20:24 mgorny Exp $
+# $Id$
 
-EAPI=3
+EAPI=6
 
-inherit base git-r3
+inherit git-r3
 
 EGIT_REPO_URI="https://github.com/HaxeFoundation/${PN}"
 EGIT_COMMIT=${PV}
 SRC_URI=""
-KEYWORDS="amd64 ~arm ~ppc x86"
+KEYWORDS="~amd64 ~x86"
 
 DESCRIPTION="Haxe cross-platform toolkit"
 HOMEPAGE="http://haxe.org/"
@@ -20,7 +20,11 @@ IUSE=""
 
 RDEPEND=""
 DEPEND="${RDEPEND}
-	dev-lang/ocaml[ocamlopt]"
+	dev-lang/neko
+	>=dev-lang/ocaml-4.02[ocamlopt]
+	dev-libs/libpcre
+	dev-ml/camlp4[ocamlopt]
+	sys-libs/zlib"
 
 MAKEOPTS+=" -j1"
 
