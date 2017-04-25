@@ -29,7 +29,6 @@ IUSE="
 	webp
 	system-allegro
 	+system-curl
-	+system-freetype
 	+system-giflib
 	+system-jpeg
 	+system-libpng
@@ -41,7 +40,6 @@ IUSE="
 RDEPEND="
 	system-tinyxml? ( dev-libs/tinyxml )
 	system-allegro? ( media-libs/allegro:0[X,png] )
-	system-freetype? ( media-libs/freetype:2 )
 	system-giflib? ( >=media-libs/giflib-5.0 )
 	system-libpng? ( media-libs/libpng:0 )
 	webp? ( system-libwebp? ( media-libs/libwebp ) )
@@ -83,12 +81,12 @@ src_configure() {
 		$(use system-pixman && echo \
 			-DPIXMAN_DIR="$($(tc-getPKG_CONFIG) --variable=includedir pixman-1)/pixman-1" \
 			-DPIXMAN_LIBRARY="$($(tc-getPKG_CONFIG) --variable=libdir pixman-1)/libpixman-1.so")
-		$(use system-freetype && echo \
-			-DFREETYPE_DIR="$($(tc-getPKG_CONFIG) --variable=includedir freetype2)" \
-			-DFREETYPE_LIBRARY="$($(tc-getPKG_CONFIG) --variable=libdir freetype2)/libfreetype.so")
+		#$(use system-freetype && echo \
+			#-DFREETYPE_DIR="$($(tc-getPKG_CONFIG) --variable=includedir freetype2)" \
+			#-DFREETYPE_LIBRARY="$($(tc-getPKG_CONFIG) --variable=libdir freetype2)/libfreetype.so")
 		-DUSE_SHARED_ALLEGRO4="$(usex system-allegro)"
 		-DUSE_SHARED_CURL="$(usex system-curl)"
-		-DUSE_SHARED_FREETYPE="$(usex system-freetype)"
+		-DUSE_SHARED_FREETYPE=OFF # Currently requires non-distributed internal files."
 		-DUSE_SHARED_GIFLIB="$(usex system-giflib)"
 		-DUSE_SHARED_JPEGLIB="$(usex system-jpeg)"
 		-DUSE_SHARED_LIBLOADPNG="$(usex system-allegro)"
