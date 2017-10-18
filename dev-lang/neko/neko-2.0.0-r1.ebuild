@@ -25,7 +25,17 @@ src_configure() {
 	sed -i 's/readline();/"s";/' src/tools/install.neko || die "Unable to modify install.neko."
 }
 
+src_prepare() {
+	epatch "${FILESDIR}/${PV}-soname.patch"
+
+	# fix path to use lib64 for appropriate architectures
+	sed -i -e "s:\/lib\/:\/$(get_libdir)\/:g" Makefile \
+		|| die "patching Makefile failed"
+	sed -i -e "s:\/lib$:\/$(get_libdir):" Makefile \
+		|| die "patching Makefile failed"
+}
+
 src_install() {
-	mkdir -p "${D}/usr/"{lib,bin} # Missing from install target
+	mkdir -p "${D}/usr/"{$(get_libdir),bin} # Missing from install target
 	emake INSTALL_PREFIX="${D}/usr" install
 }
