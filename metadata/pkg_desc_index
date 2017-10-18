@@ -1,4 +1,4 @@
 dev-games/aseprite 1.1.13 1.2_beta9 1.2.2 9999: Animated sprite editor & pixel art tool
-dev-lang/haxe 3.2.0 3.4.2: Haxe cross-platform toolkit
-dev-lang/neko 2.0.0: Neko is a high-level dynamically typed programming language.
+dev-lang/haxe 3.2.0 3.4.4: Haxe cross-platform toolkit
+dev-lang/neko 2.0.0-r1: Neko is a high-level dynamically typed programming language.
 games-engines/love 0.9.0 0.9.1 0.9.2 0.10.0 0.10.1 0.10.2: A framework for 2D games in Lua
