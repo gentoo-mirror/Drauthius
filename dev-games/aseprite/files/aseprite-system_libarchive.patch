@@ -53,11 +53,11 @@ index a9e80d73c..619acac92 100644
    ${FREETYPE_LIBRARIES}
    ${HARFBUZZ_LIBRARIES}
    json11
--  archive_static)
-+  ${ARCHIVE_LIBRARIES})
+-  archive_static
++  ${ARCHIVE_LIBRARIES}
+   fmt)
  
  if(ENABLE_SCRIPTING)
-   target_link_libraries(app-lib script-lib)
 diff --git a/third_party/CMakeLists.txt b/third_party/CMakeLists.txt
 index 596ffa2e4..977816439 100644
 --- a/third_party/CMakeLists.txt
