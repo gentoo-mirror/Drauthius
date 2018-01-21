@@ -10,6 +10,8 @@ HOMEPAGE="http://www.aseprite.org"
 LICENSE="Proprietary"
 SLOT="0"
 
+PATCHES=( "${FILESDIR}/${PN}-system_libarchive.patch" )
+
 if [[ ${PV} = 9999* || ${PV} = *beta* ]]; then
 	inherit git-r3
 	EGIT_REPO_URI="https://github.com/aseprite/aseprite"
@@ -38,6 +40,8 @@ IUSE="
 	+system-zlib"
 
 RDEPEND="
+	app-arch/libarchive
+	app-text/cmark
 	system-tinyxml? ( dev-libs/tinyxml )
 	system-allegro? ( media-libs/allegro:0[X,png] )
 	system-giflib? ( >=media-libs/giflib-5.0 )
@@ -70,7 +74,7 @@ src_prepare() {
 }
 
 src_configure() {
-	use debug && CMAKE_BUILD_TYPE=Debug
+	use debug && CMAKE_BUILD_TYPE=Debug || CMAKE_BUILD_TYPE=Release
 
 	local mycmakeargs=(
 		-DCURL_STATICLIB=OFF
@@ -81,21 +85,19 @@ src_configure() {
 		$(use system-pixman && echo \
 			-DPIXMAN_DIR="$($(tc-getPKG_CONFIG) --variable=includedir pixman-1)/pixman-1" \
 			-DPIXMAN_LIBRARY="$($(tc-getPKG_CONFIG) --variable=libdir pixman-1)/libpixman-1.so")
-		#$(use system-freetype && echo \
-			#-DFREETYPE_DIR="$($(tc-getPKG_CONFIG) --variable=includedir freetype2)" \
-			#-DFREETYPE_LIBRARY="$($(tc-getPKG_CONFIG) --variable=libdir freetype2)/libfreetype.so")
-		-DUSE_SHARED_ALLEGRO4="$(usex system-allegro)"
+		-DUSE_SHARED_CMARK=ON
 		-DUSE_SHARED_CURL="$(usex system-curl)"
-		-DUSE_SHARED_FREETYPE=OFF # Currently requires non-distributed internal files."
 		-DUSE_SHARED_GIFLIB="$(usex system-giflib)"
 		-DUSE_SHARED_JPEGLIB="$(usex system-jpeg)"
-		-DUSE_SHARED_LIBLOADPNG="$(usex system-allegro)"
+		-DUSE_SHARED_LIBARCHIVE=ON
 		-DUSE_SHARED_LIBPNG="$(usex system-libpng)"
-		-DUSE_SHARED_PIXMAN="$(usex system-pixman)"
-		-DUSE_SHARED_TINYXML="$(usex system-tinyxml)"
-		-DUSE_SHARED_ZLIB="$(usex system-zlib)"
-		-DWITH_WEBP_SUPPORT="$(usex webp)"
+		-DUSE_SHARED_LIBLOADPNG="$(usex system-allegro)"
 		-DUSE_SHARED_LIBWEBP="$(usex system-libwebp)"
+		-DUSE_SHARED_TINYXML="$(usex system-tinyxml)"
+		-DUSE_SHARED_PIXMAN="$(usex system-pixman)"
+		-DUSE_SHARED_FREETYPE=OFF # Currently requires non-distributed internal files."
+		-DUSE_SHARED_ALLEGRO4="$(usex system-allegro)"
+		-DWITH_WEBP_SUPPORT="$(usex webp)"
 		-DENABLE_MEMLEAK="$(usex memleak)"
 	)
 
