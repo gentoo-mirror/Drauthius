@@ -25,7 +25,7 @@ DEPEND="
 "
 
 src_configure() {
-	use gui && qtchooser -run-tool=qmake -qt=5 simcqt.pro PREFIX="${D}/usr" CONFIG+=openssl LIBS+="-lssl"
+	use gui && qtchooser -run-tool=qmake -qt=5 simcqt.pro PREFIX="${D}/usr" CONFIG+=openssl LIBS+="-lssl -lcrypto"
 }
 
 src_compile() {
@@ -36,11 +36,4 @@ src_compile() {
 src_install() {
 	install -D -m755 engine/simc "${D}"/usr/bin/simc
 	use gui && emake install
-}
-
-pkg_postinst() {
-	elog "You will need to obtain an API key if you wish to import from the"
-	elog "WoW armory."
-	elog "Follow the instructions here:"
-	elog "  https://github.com/simulationcraft/simc/wiki/BattleArmoryAPI"
 }
