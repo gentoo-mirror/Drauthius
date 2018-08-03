@@ -29,25 +29,33 @@ IUSE="
 	debug
 	memleak
 	webp
-	system-allegro"
+	system-allegro
+	+system-curl
+	+system-giflib
+	+system-jpeg
+	+system-libpng
+	+system-libwebp
+	+system-pixman
+	+system-tinyxml
+	+system-zlib"
 
 RDEPEND="
 	app-arch/libarchive
 	app-text/cmark
-	dev-libs/tinyxml
+	system-tinyxml? ( dev-libs/tinyxml )
 	system-allegro? ( media-libs/allegro:0[X,png] )
-	media-libs/freetype:2
-	>=media-libs/giflib-5.0
-	media-libs/libpng:0
-	webp? ( !!media-libs/libwebp )
-	net-misc/curl
-	sys-libs/zlib
-	virtual/jpeg:=
+	system-giflib? ( >=media-libs/giflib-5.0 )
+	system-libpng? ( media-libs/libpng:0 )
+	webp? ( system-libwebp? ( media-libs/libwebp ) )
+	system-curl? ( net-misc/curl )
+	system-zlib? ( sys-libs/zlib )
+	system-jpeg? ( virtual/jpeg:= )
 	x11-libs/libX11
 	x11-libs/libXxf86dga
-	x11-libs/pixman"
+	system-pixman? ( x11-libs/pixman )"
 DEPEND="$RDEPEND
 	app-arch/unzip"
+	#dev-cpp/gtest
 
 DOCS=( EULA.txt
 	docs/ase-file-specs.md
@@ -69,21 +77,25 @@ src_configure() {
 	use debug && CMAKE_BUILD_TYPE=Debug || CMAKE_BUILD_TYPE=Release
 
 	local mycmakeargs=(
+		-DCURL_STATICLIB=OFF
 		-DENABLE_UPDATER=OFF
 		-DFULLSCREEN_PLATFORM=ON
+		-DENABLE_TESTS=OFF
 		-DBUILD_GMOCK=OFF
+		$(use system-pixman && echo \
+			-DPIXMAN_DIR="$($(tc-getPKG_CONFIG) --variable=includedir pixman-1)/pixman-1" \
+			-DPIXMAN_LIBRARY="$($(tc-getPKG_CONFIG) --variable=libdir pixman-1)/libpixman-1.so")
 		-DUSE_SHARED_CMARK=ON
-		-DUSE_SHARED_CURL=ON
-		-DUSE_SHARED_GIFLIB=ON
-		-DUSE_SHARED_JPEGLIB=ON
-		-DUSE_SHARED_ZLIB=ON
+		-DUSE_SHARED_CURL="$(usex system-curl)"
+		-DUSE_SHARED_GIFLIB="$(usex system-giflib)"
+		-DUSE_SHARED_JPEGLIB="$(usex system-jpeg)"
 		-DUSE_SHARED_LIBARCHIVE=ON
-		-DUSE_SHARED_LIBPNG=ON
-		-DUSE_SHARED_LIBLOADPNG=OFF # Does not exist in the main tree
-		-DUSE_SHARED_TINYXML=ON
-		-DUSE_SHARED_PIXMAN=ON
-		-DUSE_SHARED_FREETYPE=ON
-		-DUSE_SHARED_HARFBUZZ=ON
+		-DUSE_SHARED_LIBPNG="$(usex system-libpng)"
+		-DUSE_SHARED_LIBLOADPNG="$(usex system-allegro)"
+		-DUSE_SHARED_LIBWEBP="$(usex system-libwebp)"
+		-DUSE_SHARED_TINYXML="$(usex system-tinyxml)"
+		-DUSE_SHARED_PIXMAN="$(usex system-pixman)"
+		-DUSE_SHARED_FREETYPE=OFF # Currently requires non-distributed internal files."
 		-DUSE_SHARED_ALLEGRO4="$(usex system-allegro)"
 		-DWITH_WEBP_SUPPORT="$(usex webp)"
 		-DENABLE_MEMLEAK="$(usex memleak)"
