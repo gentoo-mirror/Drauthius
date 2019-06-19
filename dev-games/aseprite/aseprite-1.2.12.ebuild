@@ -10,7 +10,7 @@ HOMEPAGE="http://www.aseprite.org"
 LICENSE="Proprietary"
 SLOT="0"
 
-PATCHES=( "${FILESDIR}/${P}-system_libarchive.patch" )
+PATCHES=( "${FILESDIR}/${P}-system_libarchive.patch" "${FILESDIR}/${P}-draw.patch" )
 
 if [[ ${PV} = 9999* ]]; then
 	inherit git-r3
