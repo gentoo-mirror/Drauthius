@@ -4,7 +4,7 @@
 EAPI=7
 PYTHON_COMPAT=( python2_7 )
 
-inherit eutils python-any-r1 scons-utils
+inherit eutils python-any-r1 scons-utils flag-o-matic llvm
 
 DESCRIPTION="Multi-platform 2D and 3D game engine"
 HOMEPAGE="http://godotengine.org"
@@ -15,7 +15,19 @@ SRC_URI="https://github.com/godotengine/${PN}/archive/${PV}-stable.zip"
 S="${WORKDIR}/${P}-stable"
 KEYWORDS="~amd64 ~x86"
 
-IUSE="+enet +freetype +llvm pulseaudio theora +udev +vorbis +webp +websockets +mbedtls +opus"
+IUSE="debug
+	+enet
+	+freetype
+	llvm
+	lto
+	+mbedtls
+	+opus
+	pulseaudio
+	theora
+	+udev
+	+vorbis
+	+webp
+	+websockets"
 
 DEPEND="
 		>=app-arch/bzip2-1.0.6-r6
@@ -39,7 +51,7 @@ DEPEND="
 		>=sys-apps/attr-2.4.47-r1
 		>=sys-apps/tcp-wrappers-7.6.22-r1
 		>=sys-apps/util-linux-2.25.2-r2
-		>=sys-devel/gcc-4.6.4:*[cxx]
+		!llvm? ( >=sys-devel/gcc-4.6.4:*[cxx] )
 		>=sys-libs/gdbm-1.11
 		>=sys-libs/glibc-2.20-r2
 		>=sys-libs/libcap-2.22-r2
@@ -58,7 +70,20 @@ DEPEND="
 
 RDEPEND="${DEPEND}"
 
+pkg_setup() {
+	python-any-r1_pkg_setup
+	llvm_pkg_setup
+}
+
 src_configure() {
+	if use llvm && ! tc-is-clang; then
+		einfo "Enforcing the use of clang due to USE=llvm ..."
+		CC=${CHOST}-clang
+		CXX=${CHOST}-clang++
+	fi
+
+	strip-unsupported-flags
+
 	MYSCONS=(
 		CC="$(tc-getCC)"
 		builtin_enet=$(usex enet)
@@ -88,8 +113,12 @@ src_configure() {
 		platform=x11
 		pulseaudio=$(usex pulseaudio)
 		tools=yes
+		progress=false
+		verbose=true
 		udev=$(usex udev)
 		use_llvm=$(usex llvm)
+		use_lto=$(usex lto)
+		target=$(usex debug debug release_debug)
 	)
 }
 
