@@ -12,7 +12,7 @@ SLOT="0"
 
 PATCHES=( "${FILESDIR}/${P}-system_libarchive.patch" )
 
-if [[ ${PV} = 9999* || ${PV} = *beta* ]]; then
+if [[ ${PV} = 9999* ]]; then
 	inherit git-r3
 	EGIT_REPO_URI="https://github.com/aseprite/aseprite"
 	EGIT_BRANCH="master"
@@ -20,7 +20,7 @@ if [[ ${PV} = 9999* || ${PV} = *beta* ]]; then
 		EGIT_COMMIT="v${PV/_/-}"
 	fi
 else
-	SRC_URI="https://github.com/${PN}/${PN}/releases/download/v${PV}/${PN^}-v${PV}-Source.zip"
+	SRC_URI="https://github.com/${PN}/${PN}/releases/download/v${PV//_/-}/${PN^}-v${PV//_/-}-Source.zip"
 	KEYWORDS="~amd64 ~x86"
 	S="${WORKDIR}"
 fi
@@ -28,23 +28,24 @@ fi
 IUSE="
 	debug
 	memleak
-	webp
-	system-allegro"
+	webp"
 
 RDEPEND="
 	app-arch/libarchive
 	app-text/cmark
+	dev-libs/expat
 	dev-libs/tinyxml
-	system-allegro? ( media-libs/allegro:0[X,png] )
+	=dev-games/aseprite-skia-9999-r71[debug=]
 	media-libs/freetype:2
 	>=media-libs/giflib-5.0
+	media-libs/fontconfig
 	media-libs/libpng:0
 	webp? ( !!media-libs/libwebp )
 	net-misc/curl
+	sys-apps/util-linux
 	sys-libs/zlib
 	virtual/jpeg:=
 	x11-libs/libX11
-	x11-libs/libXxf86dga
 	x11-libs/pixman"
 DEPEND="$RDEPEND
 	app-arch/unzip"
@@ -56,13 +57,6 @@ DOCS=( EULA.txt
 
 src_prepare() {
 	cmake-utils_src_prepare
-
-	if use system-allegro; then
-		ewarn "system-allegro is enabled. It has know issues which are solved"
-		ewarn "in the bundled version:"
-		ewarn " * You will not be able to resize the window."
-		ewarn " * You will have problems adding HSV colours on non-English systems."
-	fi
 }
 
 src_configure() {
@@ -71,7 +65,6 @@ src_configure() {
 	local mycmakeargs=(
 		-DENABLE_UPDATER=OFF
 		-DFULLSCREEN_PLATFORM=ON
-		-DBUILD_GMOCK=OFF
 		-DUSE_SHARED_CMARK=ON
 		-DUSE_SHARED_CURL=ON
 		-DUSE_SHARED_GIFLIB=ON
@@ -79,14 +72,14 @@ src_configure() {
 		-DUSE_SHARED_ZLIB=ON
 		-DUSE_SHARED_LIBARCHIVE=ON
 		-DUSE_SHARED_LIBPNG=ON
-		-DUSE_SHARED_LIBLOADPNG=OFF # Does not exist in the main tree
 		-DUSE_SHARED_TINYXML=ON
 		-DUSE_SHARED_PIXMAN=ON
 		-DUSE_SHARED_FREETYPE=ON
 		-DUSE_SHARED_HARFBUZZ=ON
-		-DUSE_SHARED_ALLEGRO4="$(usex system-allegro)"
 		-DWITH_WEBP_SUPPORT="$(usex webp)"
 		-DENABLE_MEMLEAK="$(usex memleak)"
+		-DSKIA_DIR="/var/lib/aseprite-skia"
+		-DSKIA_OUT_DIR="/var/lib/aseprite-skia/out/Release"
 	)
 
 	cmake-utils_src_configure

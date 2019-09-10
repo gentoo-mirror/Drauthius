@@ -10,7 +10,7 @@ HOMEPAGE="http://www.aseprite.org"
 LICENSE="Proprietary"
 SLOT="0"
 
-PATCHES=( "${FILESDIR}/${P}-system_libarchive.patch" "${FILESDIR}/${P}-draw.patch" )
+PATCHES=( "${FILESDIR}/${P}-system_libarchive.patch" )
 
 if [[ ${PV} = 9999* ]]; then
 	inherit git-r3
@@ -65,7 +65,6 @@ src_configure() {
 	local mycmakeargs=(
 		-DENABLE_UPDATER=OFF
 		-DFULLSCREEN_PLATFORM=ON
-		-DBUILD_GMOCK=OFF
 		-DUSE_SHARED_CMARK=ON
 		-DUSE_SHARED_CURL=ON
 		-DUSE_SHARED_GIFLIB=ON
