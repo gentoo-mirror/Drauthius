@@ -7,5 +7,5 @@ KEYWORDS=~amd64 ~x86
 LICENSE=GPL-2 LGPL-2.1 BSD
 PROPERTIES=live
 SLOT=0
-_eclasses_=git-r3	6d22636df236df4cc8475f7b7668bdcd
+_eclasses_=git-r3	7d6c351ee8b1feb12ed8c8b0adae088b
 _md5_=b1684b34f163bee4b4e86a83e4e5ec2c
