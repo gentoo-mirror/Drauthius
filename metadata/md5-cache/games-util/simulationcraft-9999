@@ -8,5 +8,5 @@ LICENSE=GPL-3.0
 PROPERTIES=live
 RDEPEND=gui? ( dev-qt/qtchooser )
 SLOT=0
-_eclasses_=git-r3	809e27702c573cbba31c08ed00bbad33
+_eclasses_=git-r3	86a0188f2ad9eb3d65e4d031ab8a0422
 _md5_=2071e00a2b6464f70f5c1e5511771b03
