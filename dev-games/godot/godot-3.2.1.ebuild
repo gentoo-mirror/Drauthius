@@ -16,7 +16,7 @@ if [[ ${PV} = 9999* ]]; then
 	EGIT_REPO_URI="https://github.com/godotengine/${PN}"
 	EGIT_BRANCH="master"
 else
-	SRC_URI="https://github.com/godotengine/${PN}/archive/${PV}-stable.zip"
+	SRC_URI="https://github.com/godotengine/${PN}/archive/${PV}-stable.zip -> ${P}.zip"
 	S="${WORKDIR}/${P}-stable"
 	KEYWORDS="~amd64 ~x86"
 fi
