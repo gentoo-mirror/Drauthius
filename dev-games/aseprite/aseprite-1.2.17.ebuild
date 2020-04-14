@@ -10,7 +10,10 @@ HOMEPAGE="http://www.aseprite.org"
 LICENSE="Proprietary"
 SLOT="0"
 
-PATCHES=( "${FILESDIR}/${P}-system_libarchive.patch" )
+PATCHES=(
+	"${FILESDIR}/${P}-system_libarchive.patch"
+	"${FILESDIR}/${P}-system_libwebp.patch"
+)
 
 SKIA_VERSION="m81-b607b32047"
 SKIA_FILE="Skia-Linux-Release-${ARCH/amd64/x64}.zip"
@@ -37,7 +40,7 @@ RDEPEND="
 	>=media-libs/giflib-5.0
 	media-libs/fontconfig
 	media-libs/libpng:0
-	webp? ( !!media-libs/libwebp )
+	webp? ( media-libs/libwebp )
 	net-misc/curl
 	sys-apps/util-linux
 	sys-libs/zlib
@@ -78,6 +81,7 @@ src_configure() {
 		-DUSE_SHARED_PIXMAN=ON
 		-DUSE_SHARED_FREETYPE=ON
 		-DUSE_SHARED_HARFBUZZ=ON
+		-DUSE_SHARED_WEBP=ON
 		-DWITH_WEBP_SUPPORT="$(usex webp)"
 		-DENABLE_MEMLEAK="$(usex memleak)"
 		-DSKIA_DIR="${S}/skia"
