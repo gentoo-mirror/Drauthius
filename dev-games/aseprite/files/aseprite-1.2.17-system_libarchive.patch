@@ -2,15 +2,15 @@ diff --git a/CMakeLists.txt b/CMakeLists.txt
 index dae638be8..dd5d17794 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -64,6 +64,7 @@ option(USE_SHARED_CURL    "Use your installed copy of curl" off)
+@@ -60,6 +60,7 @@ option(USE_SHARED_CURL    "Use your installed copy of curl" off)
  option(USE_SHARED_GIFLIB  "Use your installed copy of giflib" off)
  option(USE_SHARED_JPEGLIB "Use your installed copy of jpeglib" off)
  option(USE_SHARED_ZLIB    "Use your installed copy of zlib" off)
 +option(USE_SHARED_LIBARCHIVE "Use your installed copy of libarchive" off)
  option(USE_SHARED_LIBPNG  "Use your installed copy of libpng" off)
- option(USE_SHARED_LIBLOADPNG "Use your installed copy of libloadpng" off)
  option(USE_SHARED_TINYXML "Use your installed copy of tinyxml" off)
-@@ -193,6 +194,15 @@ else()
+ option(USE_SHARED_PIXMAN  "Use your installed copy of pixman" off)
+@@ -202,6 +202,15 @@ else()
  endif()
  include_directories(${ZLIB_INCLUDE_DIRS})
  
@@ -26,20 +26,11 @@ index dae638be8..dd5d17794 100644
  # libpng
  if(USE_SHARED_LIBPNG)
    find_package(PNG REQUIRED)
-@@ -294,7 +304,7 @@ if(USE_SHARED_CMARK)
- else()
-   add_definitions(-DCMARK_STATIC_DEFINE)
-   set(CMARK_LIBRARIES libcmark_static)
--  include_directories(${CMAKE_CURRENT_BINARY_DIR}/third_party/cmark)
-+  include_directories(${CMARK_DIR})
- endif()
- 
- if(REQUIRE_CURL)
 diff --git a/src/app/CMakeLists.txt b/src/app/CMakeLists.txt
 index a9e80d73c..619acac92 100644
 --- a/src/app/CMakeLists.txt
 +++ b/src/app/CMakeLists.txt
-@@ -82,9 +82,6 @@ if(WITH_WEBP_SUPPORT)
+@@ -91,9 +91,6 @@ if(WITH_WEBP_SUPPORT)
    add_definitions(-DASEPRITE_WITH_WEBP_SUPPORT)
  endif()
  
@@ -62,7 +53,7 @@ diff --git a/third_party/CMakeLists.txt b/third_party/CMakeLists.txt
 index 596ffa2e4..977816439 100644
 --- a/third_party/CMakeLists.txt
 +++ b/third_party/CMakeLists.txt
-@@ -113,16 +113,18 @@ endif()
+@@ -105,16 +105,18 @@ endif()
  add_subdirectory(json11)
  
  # libarchive

@@ -1,0 +1,41 @@
+diff -uNr a/CMakeLists.txt b/CMakeLists.txt
+--- a/CMakeLists.txt	2020-03-06 18:47:37.000000000 +0100
++++ b/CMakeLists.txt	2020-04-14 09:25:00.270728334 +0200
+@@ -65,6 +65,7 @@
+ option(USE_SHARED_PIXMAN  "Use your installed copy of pixman" off)
+ option(USE_SHARED_FREETYPE "Use shared FreeType library" off)
+ option(USE_SHARED_HARFBUZZ "Use shared HarfBuzz library" off)
++option(USE_SHARED_WEBP    "Use your installed copy of webp" off)
+ option(ENABLE_ASEPRITE_EXE "Compile main Aseprite executable" on)
+ option(ENABLE_MEMLEAK      "Enable memory-leaks detector (only for developers)" off)
+ option(ENABLE_NEWS         "Enable the news in Home tab" on)
+@@ -219,9 +220,14 @@
+ 
+ # libwebp
+ if(WITH_WEBP_SUPPORT)
+-  set(WEBP_LIBRARIES webp webpdemux webpmux)
+-  set(WEBP_INCLUDE_DIR ${LIBWEBP_DIR}/src)
+-  include_directories(${WEBP_INCLUDE_DIR})
++  if(USE_SHARED_WEBP)
++    find_library(WEBP_LIBRARIES NAMES webp)
++    find_path(WEBP_INCLUDE_DIRS NAMES decode.h PATH_SUFFIXES webp)
++  else()
++    set(WEBP_LIBRARIES webp webpdemux webpmux)
++    set(WEBP_INCLUDE_DIR ${LIBWEBP_DIR}/src)
++    include_directories(${WEBP_INCLUDE_DIR})
++  endif()
+ endif()
+ 
+ # tinyxml
+diff -uNr a/third_party/CMakeLists.txt b/third_party/CMakeLists.txt
+--- a/third_party/CMakeLists.txt	2019-10-24 01:54:06.000000000 +0200
++++ b/third_party/CMakeLists.txt	2020-04-14 09:22:20.799744576 +0200
+@@ -32,7 +32,7 @@
+   add_subdirectory(giflib)
+ endif()
+ 
+-if(WITH_WEBP_SUPPORT)
++if(WITH_WEBP_SUPPORT AND NOT USE_SHARED_WEBP)
+   # Enable img2webp so "webpmux" library is built
+   set(WEBP_BUILD_IMG2WEBP ON CACHE BOOL "Build the img2webp animation tool.")
+   add_subdirectory(libwebp)
