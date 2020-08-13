@@ -91,5 +91,5 @@ src_configure() {
 }
 
 pkg_postinst() {
-	elog "Aseprite is for personal use only. You may not distribute it."
+	ewarn "Aseprite is for personal use only. You may not distribute it."
 }
