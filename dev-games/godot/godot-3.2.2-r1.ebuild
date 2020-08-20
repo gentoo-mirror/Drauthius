@@ -33,7 +33,8 @@ IUSE="
 	theora
 	+udev
 	+vorbis
-	+webp"
+	+webp
+	+X"
 
 DEPEND="
 	>=app-arch/bzip2-1.0.6-r6
@@ -44,12 +45,17 @@ DEPEND="
 	dev-libs/libpcre2[pcre32]
 	>=media-libs/alsa-lib-1.0.28
 	>=media-libs/flac-1.3.1-r1
+	freetype? ( >=media-libs/freetype-2.5.3-r1:2 )
 	>=media-libs/libogg-1.3.1
+	>=media-libs/libpng-1.6.16:0=
 	>=media-libs/libsndfile-1.0.25-r1
 	media-libs/libvpx
-	>=media-libs/mesa-10.2.8[gles2]
+	theora? ( media-libs/libtheora )
+	vorbis? ( >=media-libs/libvorbis-1.3.4 )
 	webp? ( media-libs/libwebp )
 	opus? ( media-libs/opus )
+	>=media-libs/mesa-10.2.8[gles2]
+	pulseaudio? ( >=media-sound/pulseaudio-5.0-r7 )
 	enet? ( net-libs/enet )
 	>=net-libs/libasyncns-0.8-r3
 	mbedtls? ( net-libs/mbedtls )
@@ -57,22 +63,22 @@ DEPEND="
 	>=sys-apps/attr-2.4.47-r1
 	>=sys-apps/tcp-wrappers-7.6.22-r1
 	>=sys-apps/util-linux-2.25.2-r2
-	!llvm? ( >=sys-devel/gcc-4.6.4:*[cxx] )
+	!llvm? ( >=sys-devel/gcc-7.0.0:*[cxx] )
+	llvm? ( >=sys-devel/llvm-6.0.0 )
 	>=sys-libs/gdbm-1.11
 	>=sys-libs/glibc-2.20-r2
 	>=sys-libs/libcap-2.22-r2
 	>=sys-libs/zlib-1.2.8-r1
-	>=x11-libs/libX11-1.6.2
-	>=x11-libs/libXcursor-1.1.14
-	>=x11-libs/libXinerama-1.1.3
-	freetype? ( >=media-libs/freetype-2.5.3-r1:2 )
-	llvm? ( >=sys-devel/llvm-3.6.0 )
-	>=media-libs/libpng-1.6.16:0=
-	pulseaudio? ( >=media-sound/pulseaudio-5.0-r7 )
-	theora? ( media-libs/libtheora )
+	X? (
+		>=x11-libs/libX11-1.6.2
+		>=x11-libs/libXcursor-1.1.14
+		>=x11-libs/libXi-1.0.0
+		>=x11-libs/libXinerama-1.1.3
+	)
 	udev? ( virtual/udev )
-	virtual/glu
-	vorbis? ( >=media-libs/libvorbis-1.3.4 )"
+	virtual/glu"
+
+#dev-lang/yasm
 
 RDEPEND="${DEPEND}"
 
@@ -114,7 +120,7 @@ src_configure() {
 		module_theora_enabled=$(usex theora)
 		module_vorbis_enabled=$(usex vorbis)
 		module_webp_enabled=$(usex webp)
-		platform=x11
+		platform=$(usex X x11 server)
 		pulseaudio=$(usex pulseaudio)
 		tools=yes
 		progress=false
@@ -136,20 +142,20 @@ src_install() {
 	dobin bin/godot.*
 	if [[ "${ARCH}" == "amd64" ]]; then
 		if use llvm; then
-			make_desktop_entry godot.x11.tools.64.llvm Godot
+			make_desktop_entry godot.x11.opt.tools.64.llvm Godot
 			with_desktop_entry=1
 		else
-			make_desktop_entry godot.x11.tools.64 Godot
+			make_desktop_entry godot.x11.opt.tools.64 Godot
 			with_desktop_entry=1
 		fi
 	fi
 
 	if [[ "${ARCH}" == "x86" ]]; then
 		if use llvm; then
-			make_desktop_entry godot.x11.tools.32.llvm Godot
+			make_desktop_entry godot.x11.opt.tools.32.llvm Godot
 			with_desktop_entry=1
 		else
-			make_desktop_entry godot.x11.tools.32 Godot
+			make_desktop_entry godot.x11.opt.tools.32 Godot
 			with_desktop_entry=1
 		fi
 	fi
