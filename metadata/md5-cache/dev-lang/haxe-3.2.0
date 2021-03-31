@@ -3,9 +3,10 @@ DEPEND=dev-lang/neko >=dev-lang/ocaml-4.02[ocamlopt] dev-libs/libpcre dev-ml/cam
 DESCRIPTION=Haxe cross-platform toolkit
 EAPI=6
 HOMEPAGE=http://haxe.org/
+INHERIT=git-r3
 KEYWORDS=~amd64 ~x86
 LICENSE=GPL-2 LGPL-2.1 BSD
 PROPERTIES=live
 SLOT=0
-_eclasses_=git-r3	3e7ec3d6619213460c85e2aa48398441
+_eclasses_=git-r3	b8e8c92aa5fe8df7187e466138eb4e52
 _md5_=b1684b34f163bee4b4e86a83e4e5ec2c

@@ -3,10 +3,11 @@ DEPEND=gui? ( dev-qt/qtchooser ) dev-libs/openssl gui? ( dev-qt/qtwebkit:5 ) >=d
 DESCRIPTION=SimulationCraft is a tool to explore combat mechanics in the popular MMO RPG World of Warcraft. It is a multi-player event-driven simulator written in C++ that models raid damage.
 EAPI=6
 HOMEPAGE=http://simulationcraft.org/
+INHERIT=git-r3
 IUSE=+gui
 LICENSE=GPL-3.0
 PROPERTIES=live
 RDEPEND=gui? ( dev-qt/qtchooser )
 SLOT=0
-_eclasses_=git-r3	3e7ec3d6619213460c85e2aa48398441
+_eclasses_=git-r3	b8e8c92aa5fe8df7187e466138eb4e52
 _md5_=2071e00a2b6464f70f5c1e5511771b03
