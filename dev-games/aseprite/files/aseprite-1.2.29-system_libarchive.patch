@@ -53,7 +53,7 @@ diff --git a/third_party/CMakeLists.txt b/third_party/CMakeLists.txt
 index 596ffa2e4..977816439 100644
 --- a/third_party/CMakeLists.txt
 +++ b/third_party/CMakeLists.txt
-@@ -105,16 +105,18 @@ endif()
+@@ -105,19 +105,21 @@ endif()
  add_subdirectory(json11)
  
  # libarchive
@@ -64,6 +64,9 @@ index 596ffa2e4..977816439 100644
 -set(ENABLE_CNG OFF CACHE BOOL "Enable the use of CNG(Crypto Next Generation)")
 -set(ENABLE_BZip2 OFF CACHE BOOL "Enable the use of the system BZip2 library if found")
 -set(ENABLE_LIBXML2 OFF CACHE BOOL "Enable the use of the system libxml2 library if found")
+-set(ENABLE_CAT OFF CACHE BOOL "Enable cat building")
+-set(ENABLE_TAR OFF CACHE BOOL "Enable tar building")
+-set(ENABLE_CPIO OFF CACHE BOOL "Enable cpio building")
 -add_subdirectory(libarchive)
 -target_include_directories(archive_static INTERFACE
 -  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/libarchive/libarchive>)
@@ -75,6 +78,9 @@ index 596ffa2e4..977816439 100644
 +  set(ENABLE_CNG OFF CACHE BOOL "Enable the use of CNG(Crypto Next Generation)")
 +  set(ENABLE_BZip2 OFF CACHE BOOL "Enable the use of the system BZip2 library if found")
 +  set(ENABLE_LIBXML2 OFF CACHE BOOL "Enable the use of the system libxml2 library if found")
++  set(ENABLE_CAT OFF CACHE BOOL "Enable cat building")
++  set(ENABLE_TAR OFF CACHE BOOL "Enable tar building")
++  set(ENABLE_CPIO OFF CACHE BOOL "Enable cpio building")
 +  add_subdirectory(libarchive)
 +  target_include_directories(archive_static INTERFACE
 +    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/libarchive/libarchive>)
