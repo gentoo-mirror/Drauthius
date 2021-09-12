@@ -16,9 +16,14 @@ PATCHES=(
 )
 
 SKIA_VERSION="m81-b607b32047"
-SKIA_FILE="Skia-Linux-Release-${ARCH/amd64/x64}.zip"
 SKIA_BASE_URL="https://github.com/${PN}/skia/releases/download"
-SKIA_URI="${SKIA_BASE_URL}/${SKIA_VERSION}/${SKIA_FILE} -> ${P}-skia-${SKIA_VERSION}.zip"
+SKIA_URI="
+	amd64? (
+		${SKIA_BASE_URL}/${SKIA_VERSION}/Skia-Linux-Release-x64.zip -> ${PN}-skia-${SKIA_VERSION}-amd64.zip
+	)
+	x86? (
+		${SKIA_BASE_URL}/${SKIA_VERSION}/Skia-Linux-Release-x86.zip -> ${PN}-skia-${SKIA_VERSION}-x86.zip
+	)"
 
 ASEPRITE_FILE="${PN^}-v${PV//_/-}-Source.zip"
 ASEPRITE_URI="https://github.com/${PN}/${PN}/releases/download/v${PV//_/-}/${ASEPRITE_FILE}"
@@ -57,7 +62,7 @@ src_unpack() {
 	mkdir -p "${P}/skia"
 	cd "${P}"
 	unpack "${ASEPRITE_FILE}"
-	( cd skia && unpack "${P}-skia-${SKIA_VERSION}.zip" )
+	( cd skia && unpack "${PN}-skia-${SKIA_VERSION}-${ARCH}.zip" )
 }
 
 src_prepare() {
