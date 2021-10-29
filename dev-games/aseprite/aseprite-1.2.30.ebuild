@@ -1,9 +1,9 @@
-# Copyright 1999-2020 Gentoo Foundation
+# Copyright 1999-2021 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 # $Id$
 
 EAPI=7
-inherit cmake-utils toolchain-funcs
+inherit cmake-utils toolchain-funcs xdg-utils
 
 DESCRIPTION="Animated sprite editor & pixel art tool"
 HOMEPAGE="http://www.aseprite.org"
@@ -34,7 +34,9 @@ KEYWORDS="~amd64 ~x86"
 IUSE="
 	debug
 	memleak
-	webp"
+	webp
+	kde
+"
 
 RDEPEND="
 	app-arch/libarchive
@@ -51,7 +53,10 @@ RDEPEND="
 	sys-libs/zlib
 	virtual/jpeg:=
 	x11-libs/libX11
-	x11-libs/pixman"
+	x11-libs/pixman
+	kde? (
+		 kde-apps/thumbnailers
+	)"
 
 DOCS=( EULA.txt
 	docs/ase-file-specs.md
@@ -67,6 +72,9 @@ src_unpack() {
 
 src_prepare() {
 	cmake-utils_src_prepare
+
+	sed -i "s:Icon=aseprite:Icon=${EPREFIX}/usr/share/aseprite/data/icons/ase256.png:" "${S}/src/desktop/linux/aseprite.desktop" || die
+	sed -i "s:#!/usr/bin/sh:#!/bin/env sh:" "${S}/src/desktop/linux/aseprite-thumbnailer" || die
 }
 
 src_configure() {
@@ -87,6 +95,8 @@ src_configure() {
 		-DUSE_SHARED_FREETYPE=ON
 		-DUSE_SHARED_HARFBUZZ=ON
 		-DUSE_SHARED_WEBP=ON
+		-DWITH_DESKTOP_INTEGRATION=ON
+		-DWITH_QT_THUMBNAILER="$(usex kde)"
 		-DWITH_WEBP_SUPPORT="$(usex webp)"
 		-DENABLE_MEMLEAK="$(usex memleak)"
 		-DSKIA_DIR="${S}/skia"
@@ -97,4 +107,12 @@ src_configure() {
 
 pkg_postinst() {
 	ewarn "Aseprite is for personal use only. You may not distribute it."
+
+	xdg_desktop_database_update
+	xdg_mimeinfo_database_update
+}
+
+pkg_postrm() {
+	xdg_desktop_database_update
+	xdg_mimeinfo_database_update
 }
