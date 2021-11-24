@@ -53,6 +53,7 @@ RDEPEND="
 	sys-libs/zlib
 	virtual/jpeg:=
 	x11-libs/libX11
+	x11-libs/libXcursor
 	x11-libs/pixman
 	kde? (
 		 kde-apps/thumbnailers
@@ -82,6 +83,7 @@ src_configure() {
 
 	local mycmakeargs=(
 		-DENABLE_UPDATER=OFF
+		-DENABLE_CCACHE="$(has ccache "${FEATURES}" && echo 'ON' || echo 'OFF')"
 		-DFULLSCREEN_PLATFORM=ON
 		-DUSE_SHARED_CMARK=ON
 		-DUSE_SHARED_CURL=ON
