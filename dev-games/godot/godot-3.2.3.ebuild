@@ -1,8 +1,8 @@
-# Copyright 1999-2020 Gentoo Foundation
+# Copyright 1999-2022 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
-PYTHON_COMPAT=( python2_7 python3_{6..8} )
+PYTHON_COMPAT=( python2_7 python3_{6..10} )
 
 inherit eutils python-any-r1 scons-utils flag-o-matic llvm desktop
 
@@ -30,7 +30,7 @@ IUSE="
 	+mbedtls
 	+opus
 	pulseaudio
-	theora
+	+theora
 	+udev
 	+vorbis
 	+webp
@@ -50,7 +50,7 @@ DEPEND="
 	>=media-libs/libpng-1.6.16:0=
 	>=media-libs/libsndfile-1.0.25-r1
 	media-libs/libvpx
-	theora? ( media-libs/libtheora )
+	media-libs/libtheora
 	vorbis? ( >=media-libs/libvorbis-1.3.4 )
 	webp? ( media-libs/libwebp )
 	opus? ( media-libs/opus )
@@ -99,17 +99,17 @@ src_configure() {
 	MYSCONS=(
 		CC="$(tc-getCC)"
 		CXX="$(tc-getCXX)"
-		builtin_enet=$(usex enet)
+		builtin_enet=no
 		builtin_freetype=no
 		builtin_libogg=no
 		builtin_libpng=no
-		builtin_libtheora=$(usex theora)
-		builtin_libvorbis=$(usex vorbis)
+		builtin_libtheora=no
+		builtin_libvorbis=no
 		builtin_libvpx=no
-		builtin_libwebp=$(usex webp)
-		builtin_mbedtls=$(usex mbedtls)
+		builtin_libwebp=no
+		builtin_mbedtls=no
 		builtin_miniupnpc=no
-		builtin_opus=$(usex opus)
+		builtin_opus=no
 		builtin_pcre2=no
 		builtin_zlib=no
 		builtin_zstd=no
