@@ -11,25 +11,17 @@ LICENSE="Proprietary"
 SLOT="0"
 
 PATCHES=(
+	"${FILESDIR}/${P}-system_harfbuzz.patch"
 	"${FILESDIR}/${P}-system_libarchive.patch"
 	"${FILESDIR}/${P}-system_libwebp.patch"
 )
 
-SKIA_VERSION="m81-b607b32047"
-SKIA_BASE_URL="https://github.com/${PN}/skia/releases/download"
-SKIA_URI="
-	amd64? (
-		${SKIA_BASE_URL}/${SKIA_VERSION}/Skia-Linux-Release-x64.zip -> ${PN}-skia-${SKIA_VERSION}-amd64.zip
-	)
-	x86? (
-		${SKIA_BASE_URL}/${SKIA_VERSION}/Skia-Linux-Release-x86.zip -> ${PN}-skia-${SKIA_VERSION}-x86.zip
-	)"
-
 ASEPRITE_FILE="${PN^}-v${PV//_/-}-Source.zip"
 ASEPRITE_URI="https://github.com/${PN}/${PN}/releases/download/v${PV//_/-}/${ASEPRITE_FILE}"
 
-SRC_URI="${ASEPRITE_URI} ${SKIA_URI}"
+SRC_URI="${ASEPRITE_URI}"
 KEYWORDS="~amd64 ~x86"
+S="${WORKDIR}"
 
 IUSE="
 	debug
@@ -43,6 +35,7 @@ RDEPEND="
 	app-text/cmark
 	dev-libs/expat
 	dev-libs/tinyxml
+	=dev-games/aseprite-skia-9999-r96
 	media-libs/freetype:2
 	>=media-libs/giflib-5.0
 	media-libs/fontconfig
@@ -52,23 +45,19 @@ RDEPEND="
 	sys-apps/util-linux
 	sys-libs/zlib
 	virtual/jpeg:=
+	virtual/opengl
 	x11-libs/libX11
+	x11-libs/libXcursor
 	x11-libs/pixman
 	kde? (
 		 kde-apps/thumbnailers
 	)"
 
-DOCS=( EULA.txt
+DOCS=(
+	EULA.txt
 	docs/ase-file-specs.md
 	docs/LICENSES.md
-	README.md )
-
-src_unpack() {
-	mkdir -p "${P}/skia"
-	cd "${P}"
-	unpack "${ASEPRITE_FILE}"
-	( cd skia && unpack "${PN}-skia-${SKIA_VERSION}-${ARCH}.zip" )
-}
+	README.md)
 
 src_prepare() {
 	cmake-utils_src_prepare
@@ -82,6 +71,7 @@ src_configure() {
 
 	local mycmakeargs=(
 		-DENABLE_UPDATER=OFF
+		-DENABLE_CCACHE="$(has ccache "${FEATURES}" && echo 'ON' || echo 'OFF')"
 		-DFULLSCREEN_PLATFORM=ON
 		-DUSE_SHARED_CMARK=ON
 		-DUSE_SHARED_CURL=ON
@@ -95,11 +85,15 @@ src_configure() {
 		-DUSE_SHARED_FREETYPE=ON
 		-DUSE_SHARED_HARFBUZZ=ON
 		-DUSE_SHARED_WEBP=ON
-		-DWITH_DESKTOP_INTEGRATION=ON
-		-DWITH_QT_THUMBNAILER="$(usex kde)"
-		-DWITH_WEBP_SUPPORT="$(usex webp)"
+		-DENABLE_DESKTOP_INTEGRATION=ON
+		-DENABLE_QT_THUMBNAILER="$(usex kde)"
+		-DENABLE_WEBP="$(usex webp)"
 		-DENABLE_MEMLEAK="$(usex memleak)"
-		-DSKIA_DIR="${S}/skia"
+		-DLAF_BACKEND=skia
+		-DLAF_WITH_EXAMPLES=OFF
+		-DLAF_WITH_TESTS=OFF
+		-DSKIA_DIR="/var/lib/aseprite-skia"
+		-DSKIA_LIBRARY_DIR="/var/lib/aseprite-skia/out/Release"
 	)
 
 	cmake-utils_src_configure

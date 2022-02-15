@@ -1,8 +1,7 @@
-diff --git a/CMakeLists.txt b/CMakeLists.txt
-index dae638be8..dd5d17794 100644
---- a/CMakeLists.txt
-+++ b/CMakeLists.txt
-@@ -60,6 +60,7 @@ option(USE_SHARED_CURL    "Use your installed copy of curl" off)
+diff -uNr a/CMakeLists.txt b/CMakeLists.txt
+--- a/CMakeLists.txt	2022-01-12 15:10:33.000000000 +0100
++++ b/CMakeLists.txt	2022-01-18 15:06:41.357885045 +0100
+@@ -57,6 +57,7 @@
  option(USE_SHARED_GIFLIB  "Use your installed copy of giflib" off)
  option(USE_SHARED_JPEGLIB "Use your installed copy of jpeglib" off)
  option(USE_SHARED_ZLIB    "Use your installed copy of zlib" off)
@@ -10,7 +9,7 @@ index dae638be8..dd5d17794 100644
  option(USE_SHARED_LIBPNG  "Use your installed copy of libpng" off)
  option(USE_SHARED_TINYXML "Use your installed copy of tinyxml" off)
  option(USE_SHARED_PIXMAN  "Use your installed copy of pixman" off)
-@@ -202,6 +202,15 @@ else()
+@@ -216,6 +217,15 @@
  endif()
  include_directories(${ZLIB_INCLUDE_DIRS})
  
@@ -26,12 +25,11 @@ index dae638be8..dd5d17794 100644
  # libpng
  if(USE_SHARED_LIBPNG)
    find_package(PNG REQUIRED)
-diff --git a/src/app/CMakeLists.txt b/src/app/CMakeLists.txt
-index a9e80d73c..619acac92 100644
---- a/src/app/CMakeLists.txt
-+++ b/src/app/CMakeLists.txt
-@@ -91,9 +91,6 @@ if(WITH_WEBP_SUPPORT)
-   add_definitions(-DASEPRITE_WITH_WEBP_SUPPORT)
+diff -uNr a/src/app/CMakeLists.txt b/src/app/CMakeLists.txt
+--- a/src/app/CMakeLists.txt	2022-01-12 15:10:33.000000000 +0100
++++ b/src/app/CMakeLists.txt	2022-01-18 15:06:41.357885045 +0100
+@@ -91,9 +91,6 @@
+   add_definitions(-DENABLE_WEBP)
  endif()
  
 -# libarchive definitions
@@ -40,7 +38,7 @@ index a9e80d73c..619acac92 100644
  ######################################################################
  # app-lib target
  
-@@ -551,7 +548,7 @@ target_link_libraries(app-lib
+@@ -669,7 +666,7 @@
    ${FREETYPE_LIBRARIES}
    ${HARFBUZZ_LIBRARIES}
    json11
@@ -49,18 +47,20 @@ index a9e80d73c..619acac92 100644
    fmt
    tinyexpr)
  
-diff --git a/third_party/CMakeLists.txt b/third_party/CMakeLists.txt
-index 596ffa2e4..977816439 100644
---- a/third_party/CMakeLists.txt
-+++ b/third_party/CMakeLists.txt
-@@ -105,19 +105,21 @@ endif()
+diff -uNr a/third_party/CMakeLists.txt b/third_party/CMakeLists.txt
+--- a/third_party/CMakeLists.txt	2022-01-12 15:10:34.000000000 +0100
++++ b/third_party/CMakeLists.txt	2022-01-18 15:06:41.357885045 +0100
+@@ -119,22 +119,24 @@
  add_subdirectory(json11)
  
  # libarchive
 -set(ENABLE_WERROR OFF CACHE BOOL "Treat warnings as errors - default is ON for Debug, OFF otherwise.")
 -set(ENABLE_TEST OFF CACHE BOOL "Enable unit and regression tests")
 -set(ENABLE_COVERAGE OFF CACHE BOOL "Enable code coverage (GCC only, automatically sets ENABLE_TEST to ON)")
+-set(ENABLE_LZ4 OFF CACHE BOOL "Enable the use of the system LZ4 library if found")
+-set(ENABLE_LZO OFF CACHE BOOL "Enable the use of the system LZO library if found")
 -set(ENABLE_LZMA OFF CACHE BOOL "Enable the use of the system LZMA library if found")
+-set(ENABLE_ZSTD OFF CACHE BOOL "Enable the use of the system zstd library if found")
 -set(ENABLE_CNG OFF CACHE BOOL "Enable the use of CNG(Crypto Next Generation)")
 -set(ENABLE_BZip2 OFF CACHE BOOL "Enable the use of the system BZip2 library if found")
 -set(ENABLE_LIBXML2 OFF CACHE BOOL "Enable the use of the system libxml2 library if found")
@@ -74,7 +74,10 @@ index 596ffa2e4..977816439 100644
 +  set(ENABLE_WERROR OFF CACHE BOOL "Treat warnings as errors - default is ON for Debug, OFF otherwise.")
 +  set(ENABLE_TEST OFF CACHE BOOL "Enable unit and regression tests")
 +  set(ENABLE_COVERAGE OFF CACHE BOOL "Enable code coverage (GCC only, automatically sets ENABLE_TEST to ON)")
++  set(ENABLE_LZ4 OFF CACHE BOOL "Enable the use of the system LZ4 library if found")
++  set(ENABLE_LZO OFF CACHE BOOL "Enable the use of the system LZO library if found")
 +  set(ENABLE_LZMA OFF CACHE BOOL "Enable the use of the system LZMA library if found")
++  set(ENABLE_ZSTD OFF CACHE BOOL "Enable the use of the system zstd library if found")
 +  set(ENABLE_CNG OFF CACHE BOOL "Enable the use of CNG(Crypto Next Generation)")
 +  set(ENABLE_BZip2 OFF CACHE BOOL "Enable the use of the system BZip2 library if found")
 +  set(ENABLE_LIBXML2 OFF CACHE BOOL "Enable the use of the system libxml2 library if found")
