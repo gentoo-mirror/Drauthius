@@ -50,7 +50,7 @@ diff -uNr a/src/app/CMakeLists.txt b/src/app/CMakeLists.txt
 diff -uNr a/third_party/CMakeLists.txt b/third_party/CMakeLists.txt
 --- a/third_party/CMakeLists.txt	2022-01-12 15:10:34.000000000 +0100
 +++ b/third_party/CMakeLists.txt	2022-01-18 15:06:41.357885045 +0100
-@@ -119,22 +119,24 @@
+@@ -119,24 +119,26 @@
  add_subdirectory(json11)
  
  # libarchive
@@ -63,10 +63,12 @@ diff -uNr a/third_party/CMakeLists.txt b/third_party/CMakeLists.txt
 -set(ENABLE_ZSTD OFF CACHE BOOL "Enable the use of the system zstd library if found")
 -set(ENABLE_CNG OFF CACHE BOOL "Enable the use of CNG(Crypto Next Generation)")
 -set(ENABLE_BZip2 OFF CACHE BOOL "Enable the use of the system BZip2 library if found")
+-set(ENABLE_EXPAT OFF CACHE BOOL "Enable the use of the system EXPAT library if found")
 -set(ENABLE_LIBXML2 OFF CACHE BOOL "Enable the use of the system libxml2 library if found")
 -set(ENABLE_CAT OFF CACHE BOOL "Enable cat building")
 -set(ENABLE_TAR OFF CACHE BOOL "Enable tar building")
 -set(ENABLE_CPIO OFF CACHE BOOL "Enable cpio building")
+-set(ENABLE_LIBB2 OFF CACHE BOOL "Enable the use of the system LIBB2 library if found")
 -add_subdirectory(libarchive)
 -target_include_directories(archive_static INTERFACE
 -  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/libarchive/libarchive>)
@@ -80,10 +82,12 @@ diff -uNr a/third_party/CMakeLists.txt b/third_party/CMakeLists.txt
 +  set(ENABLE_ZSTD OFF CACHE BOOL "Enable the use of the system zstd library if found")
 +  set(ENABLE_CNG OFF CACHE BOOL "Enable the use of CNG(Crypto Next Generation)")
 +  set(ENABLE_BZip2 OFF CACHE BOOL "Enable the use of the system BZip2 library if found")
++  set(ENABLE_EXPAT OFF CACHE BOOL "Enable the use of the system EXPAT library if found")
 +  set(ENABLE_LIBXML2 OFF CACHE BOOL "Enable the use of the system libxml2 library if found")
 +  set(ENABLE_CAT OFF CACHE BOOL "Enable cat building")
 +  set(ENABLE_TAR OFF CACHE BOOL "Enable tar building")
 +  set(ENABLE_CPIO OFF CACHE BOOL "Enable cpio building")
++  set(ENABLE_LIBB2 OFF CACHE BOOL "Enable the use of the system LIBB2 library if found")
 +  add_subdirectory(libarchive)
 +  target_include_directories(archive_static INTERFACE
 +    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/libarchive/libarchive>)

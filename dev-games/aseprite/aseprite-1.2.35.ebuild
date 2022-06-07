@@ -35,7 +35,7 @@ RDEPEND="
 	app-text/cmark
 	dev-libs/expat
 	dev-libs/tinyxml
-	=dev-games/aseprite-skia-9999-r96
+	=dev-games/aseprite-skia-9999-r102
 	media-libs/freetype:2
 	>=media-libs/giflib-5.0
 	media-libs/fontconfig
