@@ -1,3 +1,1 @@
-dev-games/godot 3.1.1 3.2.3-r1: Multi-platform 2D and 3D game engine
 games-engines/love 11.2 11.3: A framework for 2D games in Lua
-games-util/simulationcraft 9999: SimulationCraft is a tool to explore combat mechanics in the popular MMO RPG World of Warcraft. It is a multi-player event-driven simulator written in C++ that models raid damage.
